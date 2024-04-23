@@ -107,9 +107,9 @@ OptionChain_template = []
 subs_lst = []
 subs_pending_lst = []
 
-Indices_To_check_instrument_Sheet = ['NIFTY','BANKNIFTY',"SENSEX" "SENSEX50", "BANKEX"]
-IndexList = ["NIFTY", "BANKNIFTY", "FINNIFTY",'INDIAVIX','MIDCPNIFTY', "SENSEX", "SENSEX50", "BANKEX"]
-Token_list = {'NIFTY':26000,'MIDCPNIFTY':26074,'BANKNIFTY':26009,'FINNIFTY':26037,'INDIAVIX':26017, "SENSEX":1, "SENSEX50":47, "BANKEX":12}    
+Indices_To_check_instrument_Sheet = ["NIFTY","BANKNIFTY","SENSEX" "SENSEX50", "BANKEX"]
+IndexList = ["NIFTY", "BANKNIFTY", "FINNIFTY","INDIAVIX","MIDCPNIFTY", "SENSEX", "SENSEX50", "BANKEX"]
+Token_list = {'NIFTY':26000,'MIDCPNIFTY':26074,'BANKNIFTY':26009,'FINNIFTY':26037,'INDIAVIX':26017, 'SENSEX':1, 'SENSEX50':47, 'BANKEX':12}
 
 try:
     TerminalSheetName = sys.argv[1]
@@ -491,8 +491,11 @@ def GetToken_UsingSymbol(exchange, tradingsymbol):
             df_ins_temp = df_ins_NSE[df_ins_NSE.TradingSymbol == tradingsymbol]
             Token = df_ins_temp.iloc[0]['Token']
         elif exchange == 'BSE':
-            df_ins_temp = df_ins_BSE[df_ins_BSE.TradingSymbol == tradingsymbol]
-            Token = df_ins_temp.iloc[0]['Token']
+            if tradingsymbol in IndexList:
+                Token = Token_list[tradingsymbol]
+            else:
+                df_ins_temp = df_ins_BSE[df_ins_BSE.TradingSymbol == tradingsymbol]
+                Token = df_ins_temp.iloc[0]['Token']
         elif exchange == 'NFO':
             df_ins_temp = df_ins_NFO[df_ins_NFO.TradingSymbol == tradingsymbol]
             Token = df_ins_temp.iloc[0]['Token']
